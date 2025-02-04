@@ -1,0 +1,102 @@
+## 
+docker run -it \
+-e POSTGRES_USER="root" \
+-e POSTGRES_PASSWORD="root" \
+-e POSTGRES_DB="ny_taxi" \
+-v $(pwd)/ny_taxi_postgres_data:/var/lib/postgresql/data \ -p 5432:5432 \
+postgres: 13
+
+##  if the above code doesn't work is because the source folder might have spaces, so i fix by enclose the code between "
+
+docker run -it \
+-e POSTGRES_USER="root" \
+-e POSTGRES_PASSWORD="root" \
+-e POSTGRES_DB="ny_taxi" \
+-v "$(pwd)/ny_taxi_postgres_data":/var/lib/postgresql/data \
+-p 5432:5432 \
+postgres:13
+
+docker run --rm \
+--name postgres15 
+-e POSTGRES_USER=postgres \
+-e POSTGRES_PASSWORD=yourpassword \
+-v postgres_data:/var/lib/postgresql/data \
+postgres:15
+
+
+docker run -it --name postgres15taxi \
+-e POSTGRES_USER="root" \
+-e POSTGRES_PASSWORD="root" \
+-e POSTGRES_DB="ny_taxi" \
+-v "$(pwd)/ny_taxi_postgres_data":/var/lib/postgresql/data \
+-p 5432:5432 \
+postgres:15
+
+##
+pgcli -h localhost -p 5432 -u root -d ny_taxi
+
+
+# getting pgadmin
+
+
+docker run -it \
+-e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+-e PGADMIN_DEFAULT_PASSWORD="root" \
+-p 8080:80 \
+dpage/pgadmin4
+
+
+#Create a network
+#docker network create (name)
+docker network create pg-network
+
+#Create docker image of postgres inside a network
+
+docker run -it \
+-e POSTGRES_USER="root" \
+-e POSTGRES_PASSWORD="root" \
+-e POSTGRES_DB="ny_taxi" \
+-v "$(pwd)/ny_taxi_postgres_data":/var/lib/postgresql/data \
+-p 5432:5432 \
+--network=pg-network \
+--name=pg-database \
+postgres:13
+
+#Create docker image of pgadmin inside a network
+docker run -it \
+-e PGADMIN_DEFAULT_EMAIL="admin@admin.com" \
+-e PGADMIN_DEFAULT_PASSWORD="root" \
+-p 8080:80 \
+--network=pg-network \
+--name=pgadmin \
+dpage/pgadmin4
+
+
+URL="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
+
+python ingest_data.py \
+  --user=root \
+  --password=root \
+  --host=localhost \
+  --port=5432 \
+  --db=ny_taxi \
+  --table_name=yellow_taxi_trips \
+  --url=${URL}
+
+
+
+  #----
+
+URL="https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/yellow_tripdata_2021-01.csv.gz"
+
+docker run -it \
+  --network=pg-network \
+  taxi_ingest:v001 \
+    --user=root \
+    --password=root \
+    --host=pg-database \
+    --port=5432 \
+    --db=ny_taxi \
+    --table_name=yellow_taxi_trips \
+    --url=${URL}
+
