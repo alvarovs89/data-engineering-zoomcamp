@@ -55,3 +55,6 @@ terraform.rc
 
 # .parquet files
 **/*.parquet
+
+# .gz files
+**/*.gz
