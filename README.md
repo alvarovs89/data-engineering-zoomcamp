@@ -9,7 +9,7 @@ Welcome to my progress tracker for the **Data Engineering Zoomcamp cohort 2025**
 | 1️⃣    | Docker-Terraform                     | ✅ Completed |
 | 2️⃣    | Workflow Orchestration                           | ✅ Completed |
 | 3️⃣    | Data Warehouse & BigQuery               | ✅ Completed |
-| 4️⃣    | Analytics Engineering            | ⬜ Not Started |
+| 4️⃣    | Analytics Engineering            | ✅ Not Started |
 | 5️⃣    | Batch     | ⬜ Not Started |
 | 6️⃣    | Stream Processing                       | ⬜ Not Started |
 
@@ -22,7 +22,7 @@ Welcome to my progress tracker for the **Data Engineering Zoomcamp cohort 2025**
 - ✅ Implemented a data warehouse solution
 
 ## 🎯 Goals for This Week
-- [ ] Start Week 4 on dbt
+- [ ] 
 - [ ] Review data transformation best practices
 
 ## 📌 Notes
